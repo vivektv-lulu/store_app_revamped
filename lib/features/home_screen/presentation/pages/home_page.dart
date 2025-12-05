@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
             color: AppColors.textPrimary,
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
         elevation: 0,
         actions: [
           IconButton(
@@ -100,15 +100,15 @@ class HomePage extends StatelessWidget {
                         const Icon(
                           Icons.person_outline,
                           size: 18,
-                          color: AppColors.textPrimary,
+                          color: AppColors.secondary,
                         ),
                         const SizedBox(width: 8),
                         Text(
                           controller.loggedInUser.value,
                           style: const TextStyle(
                             fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.secondary,
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -121,7 +121,7 @@ class HomePage extends StatelessWidget {
                         Icon(
                           Icons.badge_outlined,
                           size: 16,
-                          color: AppColors.primary,
+                          color: AppColors.secondary,
                         ),
                         const SizedBox(width: 6),
                         Text(
@@ -129,7 +129,7 @@ class HomePage extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.primary,
+                            color: AppColors.secondary,
                           ),
                         ),
                       ],
