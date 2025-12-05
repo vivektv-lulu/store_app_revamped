@@ -1,0 +1,94 @@
+/// LOCAL CONFIGURATION FILE
+/// 
+/// INSTRUCTIONS:
+/// 1. Copy this file and rename it to: app_config.local.dart
+/// 2. Replace all placeholder values with your actual endpoints and credentials
+/// 3. The .local.dart file is gitignored, so your credentials will stay secure
+/// 4. Never commit app_config.local.dart to version control
+/// 
+/// This file will override the default development configuration.
+
+import 'app_config.dart';
+
+AppConfig getAppConfig() {
+  return const AppConfig(
+    // REST API Base URL
+    restBaseUrl: 'https://your-actual-rest-api.com',
+    
+    // SOAP API Base URL
+    soapBaseUrl: 'https://your-actual-soap-endpoint.com',
+    
+    // SOAP Credentials
+    soapUsername: 'your-actual-username',
+    soapPassword: 'your-actual-password',
+    
+    // Network Timeouts (optional, defaults shown)
+    connectTimeoutMs: 15000,
+    receiveTimeoutMs: 20000,
+    
+    // API Endpoints - Add all your endpoint names and paths here
+    endpoints: {
+      // REST Endpoints
+      'getHomeItems': '/api/v1/home-items',
+      'getHomeItemById': '/api/v1/home-items/{id}',
+      
+      // SOAP Operations - Each module needs its own SOAP operation
+      // Home/General
+      'soapGetHomeItems': 'GetHomeItems',
+      'soapGetHomeItemById': 'GetHomeItemById',
+      
+      // Article Enquiry Module
+      'soapArticleEnquiry': 'ArticleEnquiry',
+      'soapSearchArticle': 'SearchArticle',
+      'soapGetArticleDetails': 'GetArticleDetails',
+      
+      // In Store Operation Module
+      'soapInStoreOperation': 'InStoreOperation',
+      'soapCreateInStoreOp': 'CreateInStoreOperation',
+      'soapUpdateInStoreOp': 'UpdateInStoreOperation',
+      
+      // Label Print Module
+      'soapLabelPrint': 'LabelPrint',
+      'soapGenerateLabel': 'GenerateLabel',
+      'soapPrintLabel': 'PrintLabel',
+      
+      // Delivery Creation Module
+      'soapDeliveryCreation': 'DeliveryCreation',
+      'soapCreateDelivery': 'CreateDelivery',
+      'soapUpdateDelivery': 'UpdateDelivery',
+      'soapGetDelivery': 'GetDelivery',
+      
+      // Goods Receipt Local PO Module
+      'soapGoodsReceiptLocalPO': 'GoodsReceiptLocalPO',
+      'soapCreateGoodsReceiptPO': 'CreateGoodsReceiptPO',
+      'soapProcessGoodsReceiptPO': 'ProcessGoodsReceiptPO',
+      
+      // Stock Transport Order (STO) Module
+      'soapStockTransportOrder': 'StockTransportOrder',
+      'soapCreateSTO': 'CreateStockTransportOrder',
+      'soapUpdateSTO': 'UpdateStockTransportOrder',
+      'soapGetSTO': 'GetStockTransportOrder',
+      
+      // Reservation Module
+      'soapReservation': 'Reservation',
+      'soapCreateReservation': 'CreateReservation',
+      'soapUpdateReservation': 'UpdateReservation',
+      'soapCancelReservation': 'CancelReservation',
+      
+      // Fresh Food PO Module
+      'soapFreshFoodPO': 'FreshFoodPO',
+      'soapCreateFreshFoodPO': 'CreateFreshFoodPO',
+      'soapUpdateFreshFoodPO': 'UpdateFreshFoodPO',
+      
+      // Return PO Module
+      'soapReturnPO': 'ReturnPO',
+      'soapCreateReturnPO': 'CreateReturnPO',
+      'soapProcessReturnPO': 'ProcessReturnPO',
+      
+      // Goods Receipt Delivery Module
+      'soapGoodsReceiptDelivery': 'GoodsReceiptDelivery',
+      'soapCreateGoodsReceiptDelivery': 'CreateGoodsReceiptDelivery',
+      'soapProcessGoodsReceiptDelivery': 'ProcessGoodsReceiptDelivery',
+    },
+  );
+}

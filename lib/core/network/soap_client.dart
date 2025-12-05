@@ -4,17 +4,20 @@ import 'network_config.dart';
 
 /// Basic SOAP client using Dio.
 class SoapClient {
-  SoapClient({
-    Dio? dio,
-    this.defaultSoapAction,
-  }) : _dio = dio ??
-            Dio(
-              BaseOptions(
-                baseUrl: NetworkConfig.soapBaseUrl,
-                connectTimeout: const Duration(milliseconds: NetworkConfig.connectTimeoutMs),
-                receiveTimeout: const Duration(milliseconds: NetworkConfig.receiveTimeoutMs),
+  SoapClient({Dio? dio, this.defaultSoapAction})
+    : _dio =
+          dio ??
+          Dio(
+            BaseOptions(
+              baseUrl: NetworkConfig.soapBaseUrl,
+              connectTimeout: Duration(
+                milliseconds: NetworkConfig.connectTimeoutMs,
               ),
-            );
+              receiveTimeout: Duration(
+                milliseconds: NetworkConfig.receiveTimeoutMs,
+              ),
+            ),
+          );
 
   final Dio _dio;
   final String? defaultSoapAction;
@@ -54,4 +57,3 @@ class SoapClient {
     return base64Encode(creds);
   }
 }
-
