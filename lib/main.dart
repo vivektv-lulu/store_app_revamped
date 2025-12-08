@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'core/theme/app_colors.dart';
 import 'features/home_screen/presentation/pages/home_page.dart';
 import 'features/home_screen/presentation/pages/module_detail_page.dart';
+import 'features/article_enquiry/presentation/pages/article_enquiry_home_page.dart';
+import 'features/article_enquiry/di/article_enquiry_injection.dart';
+import 'features/article_enquiry/presentation/controllers/article_enquiry_controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,6 +54,16 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/module-detail',
           page: () => const ModuleDetailPage(),
+        ),
+        GetPage(
+          name: '/article-enquiry',
+          page: () {
+            // Initialize controller if not already initialized
+            if (!Get.isRegistered<ArticleEnquiryController>()) {
+              Get.put(ArticleEnquiryInjection.articleEnquiryController);
+            }
+            return const ArticleEnquiryHomePage();
+          },
         ),
       ],
     );

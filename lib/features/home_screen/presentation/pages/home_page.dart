@@ -121,7 +121,7 @@ class HomePage extends StatelessWidget {
                         Icon(
                           Icons.badge_outlined,
                           size: 16,
-                          color: AppColors.secondary,
+                          color: AppColors.textPrimary,
                         ),
                         const SizedBox(width: 6),
                         Text(
@@ -129,7 +129,7 @@ class HomePage extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.secondary,
+                            color: AppColors.textPrimary,
                           ),
                         ),
                       ],

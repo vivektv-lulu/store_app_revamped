@@ -83,10 +83,17 @@ class HomeController extends GetxController {
   }
 
   void navigateToModule(String moduleId, String moduleTitle) {
-    Get.toNamed('/module-detail', arguments: {
-      'id': moduleId,
-      'title': moduleTitle,
-    });
+    // Navigate to specific module screens
+    switch (moduleId) {
+      case '1': // Article Enquiry
+        Get.toNamed('/article-enquiry');
+        break;
+      default:
+        Get.toNamed('/module-detail', arguments: {
+          'id': moduleId,
+          'title': moduleTitle,
+        });
+    }
   }
 }
 
