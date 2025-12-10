@@ -2,19 +2,32 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/article_info.dart';
 
-class ArticleDetailsPage extends StatelessWidget {
+class StorageLocationStockPage extends StatelessWidget {
   final ArticleInfo articleInfo;
 
-  const ArticleDetailsPage({super.key, required this.articleInfo});
+  const StorageLocationStockPage({super.key, required this.articleInfo});
+
+  // Mock storage location stock data - in real app, this would come from API
+  List<Map<String, String>> _getStorageLocationStock() {
+    return [
+      {'locationCode': '0001', 'description': 'Unrestricted', 'stock': '507'},
+      {'locationCode': '0005', 'description': 'Bakery', 'stock': '0'},
+      {'locationCode': '0010', 'description': 'Frozen', 'stock': '125'},
+      {'locationCode': '0015', 'description': 'Dairy', 'stock': '89'},
+      {'locationCode': '0020', 'description': 'Produce', 'stock': '234'},
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
+    final stockData = _getStorageLocationStock();
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header section
+          // Header section - matching page 1
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(12),
@@ -76,9 +89,9 @@ class ArticleDetailsPage extends StatelessWidget {
 
           const SizedBox(height: 12),
 
-          // Table section
+          // Storage Location Wise Stock section
           Text(
-            'Article Details',
+            'Storage Location Wise Stock',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -87,7 +100,7 @@ class ArticleDetailsPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
 
-          // Modern table
+          // Storage Location Stock table
           Container(
             decoration: BoxDecoration(
               color: AppColors.surface,
@@ -124,7 +137,7 @@ class ArticleDetailsPage extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Text(
-                          'Field',
+                          'Location Code',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -141,7 +154,7 @@ class ArticleDetailsPage extends StatelessWidget {
                       Expanded(
                         flex: 3,
                         child: Text(
-                          'Value',
+                          'Description',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -149,12 +162,30 @@ class ArticleDetailsPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      Container(
+                        width: 1,
+                        height: 16,
+                        margin: const EdgeInsets.symmetric(horizontal: 12),
+                        color: AppColors.primary.withOpacity(0.2),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Stock',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary,
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
                     ],
                   ),
                 ),
 
                 // Table rows
-                ..._buildTableRows(),
+                ..._buildTableRows(stockData),
               ],
             ),
           ),
@@ -163,13 +194,12 @@ class ArticleDetailsPage extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildTableRows() {
+  List<Widget> _buildTableRows(List<Map<String, String>> stockData) {
     final rows = <Widget>[];
-    final fields = _getFields();
 
-    for (int i = 0; i < fields.length; i++) {
-      final field = fields[i];
-      final isLast = i == fields.length - 1;
+    for (int i = 0; i < stockData.length; i++) {
+      final data = stockData[i];
+      final isLast = i == stockData.length - 1;
 
       rows.add(
         Container(
@@ -183,101 +213,64 @@ class ArticleDetailsPage extends StatelessWidget {
                     ),
             ),
           ),
-          child: _TableRow(label: field['label']!, value: field['value']!),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    data['locationCode']!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 1,
+                  height: 16,
+                  margin: const EdgeInsets.symmetric(horizontal: 12),
+                  color: AppColors.primary.withOpacity(0.1),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    data['description']!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 1,
+                  height: 16,
+                  margin: const EdgeInsets.symmetric(horizontal: 12),
+                  color: AppColors.primary.withOpacity(0.1),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    data['stock']!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textPrimary,
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       );
     }
 
     return rows;
-  }
-
-  List<Map<String, String>> _getFields() {
-    final fields = <Map<String, String>>[];
-
-    if (articleInfo.mrp != null) {
-      fields.add({'label': 'MRP', 'value': articleInfo.mrp!});
-    }
-    if (articleInfo.brand != null) {
-      fields.add({'label': 'Brand', 'value': articleInfo.brand!});
-    }
-    if (articleInfo.mc != null) {
-      fields.add({'label': 'MC', 'value': articleInfo.mc!});
-    }
-    if (articleInfo.mcText != null) {
-      fields.add({'label': 'MC Text', 'value': articleInfo.mcText!});
-    }
-    if (articleInfo.stock != null) {
-      fields.add({'label': 'Stock', 'value': articleInfo.stock!});
-    }
-    if (articleInfo.uom != null) {
-      fields.add({'label': 'UoM', 'value': articleInfo.uom!});
-    }
-    if (articleInfo.shelfNo != null) {
-      fields.add({'label': 'Shelf No.', 'value': articleInfo.shelfNo!});
-    }
-    if (articleInfo.vendor != null) {
-      fields.add({'label': 'Vendor', 'value': articleInfo.vendor!});
-    }
-    if (articleInfo.ean != null) {
-      fields.add({'label': 'EAN', 'value': articleInfo.ean!});
-    }
-    if (articleInfo.plu != null) {
-      fields.add({'label': 'PLU', 'value': articleInfo.plu!});
-    }
-    if (articleInfo.description != null) {
-      fields.add({'label': 'Description', 'value': articleInfo.description!});
-    }
-    if (articleInfo.price != null) {
-      fields.add({'label': 'Price', 'value': articleInfo.price!});
-    }
-
-    return fields;
-  }
-}
-
-class _TableRow extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const _TableRow({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              label,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textMuted,
-              ),
-            ),
-          ),
-          Container(
-            width: 1,
-            height: 16,
-            margin: const EdgeInsets.symmetric(horizontal: 12),
-            color: AppColors.primary.withOpacity(0.1),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(
-              value,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textPrimary,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

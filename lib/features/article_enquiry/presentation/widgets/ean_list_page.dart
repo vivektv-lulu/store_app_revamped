@@ -2,19 +2,44 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/article_info.dart';
 
-class ArticleDetailsPage extends StatelessWidget {
+class EanListPage extends StatelessWidget {
   final ArticleInfo articleInfo;
 
-  const ArticleDetailsPage({super.key, required this.articleInfo});
+  const EanListPage({super.key, required this.articleInfo});
+
+  // Mock EAN list with conversions - in real app, this would come from API
+  List<Map<String, String>> _getEanList() {
+    // If EAN exists in articleInfo, use it; otherwise use mock data
+    final eanList = <Map<String, String>>[];
+
+    if (articleInfo.ean != null) {
+      eanList.add({
+        'ean': articleInfo.ean!,
+        'conversion':
+            '${articleInfo.uom ?? "EA"} = 1 ${articleInfo.uom ?? "EA"}',
+      });
+    }
+
+    // Add additional mock EANs for demonstration
+    eanList.addAll([
+      {'ean': '230000000012203', 'conversion': 'EA = 1 EA'},
+      {'ean': '230000000012210', 'conversion': 'EA = 1 EA'},
+      {'ean': '230000000012227', 'conversion': 'PK = 12 EA'},
+    ]);
+
+    return eanList;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final eanList = _getEanList();
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header section
+          // Header section - matching page 1
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(12),
@@ -76,9 +101,9 @@ class ArticleDetailsPage extends StatelessWidget {
 
           const SizedBox(height: 12),
 
-          // Table section
+          // EAN List section
           Text(
-            'Article Details',
+            'EAN List with Conversions',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -87,7 +112,7 @@ class ArticleDetailsPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
 
-          // Modern table
+          // EAN List table
           Container(
             decoration: BoxDecoration(
               color: AppColors.surface,
@@ -124,7 +149,7 @@ class ArticleDetailsPage extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Text(
-                          'Field',
+                          'EAN',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -141,7 +166,7 @@ class ArticleDetailsPage extends StatelessWidget {
                       Expanded(
                         flex: 3,
                         child: Text(
-                          'Value',
+                          'Conversion',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -154,7 +179,7 @@ class ArticleDetailsPage extends StatelessWidget {
                 ),
 
                 // Table rows
-                ..._buildTableRows(),
+                ..._buildTableRows(eanList),
               ],
             ),
           ),
@@ -163,13 +188,12 @@ class ArticleDetailsPage extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildTableRows() {
+  List<Widget> _buildTableRows(List<Map<String, String>> eanList) {
     final rows = <Widget>[];
-    final fields = _getFields();
 
-    for (int i = 0; i < fields.length; i++) {
-      final field = fields[i];
-      final isLast = i == fields.length - 1;
+    for (int i = 0; i < eanList.length; i++) {
+      final eanData = eanList[i];
+      final isLast = i == eanList.length - 1;
 
       rows.add(
         Container(
@@ -183,101 +207,46 @@ class ArticleDetailsPage extends StatelessWidget {
                     ),
             ),
           ),
-          child: _TableRow(label: field['label']!, value: field['value']!),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    eanData['ean']!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 1,
+                  height: 16,
+                  margin: const EdgeInsets.symmetric(horizontal: 12),
+                  color: AppColors.primary.withOpacity(0.1),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    eanData['conversion']!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       );
     }
 
     return rows;
-  }
-
-  List<Map<String, String>> _getFields() {
-    final fields = <Map<String, String>>[];
-
-    if (articleInfo.mrp != null) {
-      fields.add({'label': 'MRP', 'value': articleInfo.mrp!});
-    }
-    if (articleInfo.brand != null) {
-      fields.add({'label': 'Brand', 'value': articleInfo.brand!});
-    }
-    if (articleInfo.mc != null) {
-      fields.add({'label': 'MC', 'value': articleInfo.mc!});
-    }
-    if (articleInfo.mcText != null) {
-      fields.add({'label': 'MC Text', 'value': articleInfo.mcText!});
-    }
-    if (articleInfo.stock != null) {
-      fields.add({'label': 'Stock', 'value': articleInfo.stock!});
-    }
-    if (articleInfo.uom != null) {
-      fields.add({'label': 'UoM', 'value': articleInfo.uom!});
-    }
-    if (articleInfo.shelfNo != null) {
-      fields.add({'label': 'Shelf No.', 'value': articleInfo.shelfNo!});
-    }
-    if (articleInfo.vendor != null) {
-      fields.add({'label': 'Vendor', 'value': articleInfo.vendor!});
-    }
-    if (articleInfo.ean != null) {
-      fields.add({'label': 'EAN', 'value': articleInfo.ean!});
-    }
-    if (articleInfo.plu != null) {
-      fields.add({'label': 'PLU', 'value': articleInfo.plu!});
-    }
-    if (articleInfo.description != null) {
-      fields.add({'label': 'Description', 'value': articleInfo.description!});
-    }
-    if (articleInfo.price != null) {
-      fields.add({'label': 'Price', 'value': articleInfo.price!});
-    }
-
-    return fields;
-  }
-}
-
-class _TableRow extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const _TableRow({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              label,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textMuted,
-              ),
-            ),
-          ),
-          Container(
-            width: 1,
-            height: 16,
-            margin: const EdgeInsets.symmetric(horizontal: 12),
-            color: AppColors.primary.withOpacity(0.1),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(
-              value,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textPrimary,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

@@ -6,6 +6,8 @@ import 'features/home_screen/presentation/pages/module_detail_page.dart';
 import 'features/article_enquiry/presentation/pages/article_enquiry_home_page.dart';
 import 'features/article_enquiry/di/article_enquiry_injection.dart';
 import 'features/article_enquiry/presentation/controllers/article_enquiry_controller.dart';
+import 'features/label_print/presentation/pages/label_print_page.dart';
+import 'features/label_print/presentation/pages/label_print_items_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -47,14 +49,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       getPages: [
-        GetPage(
-          name: '/',
-          page: () => const HomePage(),
-        ),
-        GetPage(
-          name: '/module-detail',
-          page: () => const ModuleDetailPage(),
-        ),
+        GetPage(name: '/', page: () => const HomePage()),
+        GetPage(name: '/module-detail', page: () => const ModuleDetailPage()),
         GetPage(
           name: '/article-enquiry',
           page: () {
@@ -65,8 +61,19 @@ class MyApp extends StatelessWidget {
             return const ArticleEnquiryHomePage();
           },
         ),
+        GetPage(name: '/label-print', page: () => const LabelPrintPage()),
+        GetPage(
+          name: '/label-print-items',
+          page: () {
+            final arguments = Get.arguments as Map<String, dynamic>?;
+            return LabelPrintItemsPage(
+              handheldNumber: arguments?['handheldNumber'] ?? '',
+              labelType: arguments?['labelType'] ?? '',
+              printer: arguments?['printer'] ?? '',
+            );
+          },
+        ),
       ],
     );
   }
 }
-

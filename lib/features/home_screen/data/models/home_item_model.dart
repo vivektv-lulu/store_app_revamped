@@ -6,6 +6,7 @@ class HomeItemModel extends HomeItem {
     required super.title,
     super.description,
     super.imageUrl,
+    required super.category,
   });
 
   factory HomeItemModel.fromJson(Map<String, dynamic> json) {
@@ -14,6 +15,7 @@ class HomeItemModel extends HomeItem {
       title: json['title'] as String,
       description: json['description'] as String?,
       imageUrl: json['imageUrl'] as String?,
+      category: json['category'] as String? ?? 'Uncategorized',
     );
   }
 
@@ -23,6 +25,7 @@ class HomeItemModel extends HomeItem {
       'title': title,
       'description': description,
       'imageUrl': imageUrl,
+      'category': category,
     };
   }
 }
