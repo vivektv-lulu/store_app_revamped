@@ -6,10 +6,17 @@ import 'features/home_screen/presentation/pages/module_detail_page.dart';
 import 'features/article_enquiry/presentation/pages/article_enquiry_home_page.dart';
 import 'features/article_enquiry/di/article_enquiry_injection.dart';
 import 'features/article_enquiry/presentation/controllers/article_enquiry_controller.dart';
+import 'features/article_enquiry/presentation/services/zebra_scanner_service.dart';
 import 'features/label_print/presentation/pages/label_print_page.dart';
 import 'features/label_print/presentation/pages/label_print_items_page.dart';
 
 void main() {
+  // Initialize scanner service early, before app starts
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Register scanner service immediately
+  Get.put(ZebraScannerService(), permanent: true);
+
   runApp(const MyApp());
 }
 
@@ -54,6 +61,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/article-enquiry',
           page: () {
+            // Scanner service is already initialized in main()
             // Initialize controller if not already initialized
             if (!Get.isRegistered<ArticleEnquiryController>()) {
               Get.put(ArticleEnquiryInjection.articleEnquiryController);
